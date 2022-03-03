@@ -17,15 +17,15 @@ Javacript (js, json for now..)
 ## Indicators
 
 * Network (case insenstive )
-	-HTTP/HTTPS
-	-port
+	- HTTP/HTTPS
+	- port
 * Credentials (case insenstive )
-	-username
-	-password
-	-name
-	-lastname
+	- username
+	- password
+	- name
+	- lastname
 * Keys
-	-key
+	- key
 
 ## Data Model
 
