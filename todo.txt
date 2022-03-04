@@ -1,0 +1,10 @@
+TODO--
+
+1.Add CLI capabilities -- DONE
+	
+2.Add detection rules
+	-URLs (HTTP/HTTPS) 
+	-Ports 
+	-Domains
+	-IP addresses
+	-Keys
