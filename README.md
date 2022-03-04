@@ -4,7 +4,7 @@ Static code analysis tool + threat modeling tool
 
 ## Purpose
 
-The goal of this project is to automate basic threat modeling for codebases. The project will label the potential attack surfaces that I call indicators. They can be network based, credentials, or keys. Once I gather the data, these indicators will be mapped out graphically through an interface that you can interact with. This is just a POC that I wanted to create for fun to learn more about threat modeling and static code analysis. 
+The goal of this project is to automate basic threat modeling for codebases. The project will label all the applications services and map out the potential attack surfaces. This is just a POC that I wanted to create for fun to learn more about threat modeling and static code analysis. 
 
 ![Untitled](https://user-images.githubusercontent.com/11414669/156837592-fbceb239-6d28-4cd3-88d8-de783516bb5a.png)
 
@@ -16,24 +16,17 @@ The goal of this project is to automate basic threat modeling for codebases. The
 
 Javacript (js, json for now..)
 
-## Indicators
+## Services/Data Sources
 
-* Network (case insenstive )
-	- HTTP/HTTPS
-	- port
-* Credentials (case insenstive )
-	- username
-	- password
-	- name
-	- lastname
-* Keys
-	- key
+* API services
 
-## Data Model
+* Database Services
 
-* Type - indicator type
-* Finding - indicator
-* Location - absolute path + file name
+* Other Web Services
+
+* Web App Configs
+
+* Static frontend files ( CDN's )
 
 ## Sources
 
