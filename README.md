@@ -30,6 +30,7 @@ Javacript (js, json for now..)
 
 ## Sources
 
+https://dev.to/caffiendkitten/why-you-need-threat-modeling-3n6p
 https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html
 https://www.npmjs.com/package/common-js-file-extensions
 
