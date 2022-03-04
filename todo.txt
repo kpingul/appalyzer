@@ -1,8 +1,13 @@
 TODO--
 
 1.Add CLI capabilities -- DONE
+
+2.Files to parse
+	-.js
+	-.json
+	-.ejs
 	
-2.Add detection rules
+3.Add detection rules
 	-URLs (HTTP/HTTPS) 
 	-Ports 
 	-Domains
