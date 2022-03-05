@@ -30,7 +30,21 @@ func main() {
 			    		if err != nil {
 			        	return err
 			    	}
-			    	fmt.Println(path, info.Size())
+
+			    	//checking for javascript based files
+			    	if filepath.Ext(path) == ".js" {
+			    		fmt.Println(path)
+				}
+			    	if filepath.Ext(path) == ".json" {
+			    		fmt.Println(path)
+				
+				}
+			    	if filepath.Ext(path) == ".ejs" {
+			    		fmt.Println(path)
+				
+				}
+			    	
+
 			    	return nil
 			})
 			
