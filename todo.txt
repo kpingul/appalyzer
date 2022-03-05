@@ -3,9 +3,9 @@ TODO--
 1.Add CLI capabilities -- DONE
 
 2.Files to parse
-	-.js
-	-.json
-	-.ejs
+	-.js --DONE
+	-.json --DONE
+	-.ejs --DONE
 	
 3.Add detection rules
 	-URLs (HTTP/HTTPS) 
