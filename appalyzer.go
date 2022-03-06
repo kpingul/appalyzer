@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"fmt"
+	"bufio"
 	"path/filepath"
 	"github.com/urfave/cli/v2"
 )
@@ -25,7 +26,7 @@ func main() {
 
 
 			//walking through project recursively
-			err := filepath.Walk(`.`,
+			err := filepath.Walk(`C:\Users\14152\Downloads\Eat36Five-master\Eat36Five-master`,
 				func(path string, info os.FileInfo, err error) error {
 			    		if err != nil {
 			        	return err
@@ -34,6 +35,21 @@ func main() {
 			    	//checking for javascript based files
 			    	if filepath.Ext(path) == ".js" {
 			    		fmt.Println(path)
+			    		file, err := os.Open(path)
+					if err != nil {
+						log.Fatal(err)
+					}
+					defer file.Close()
+
+					scanner := bufio.NewScanner(file)
+					
+					for scanner.Scan() {
+						// fmt.Println(scanner.Text())
+					}
+
+					if err := scanner.Err(); err != nil {
+						log.Fatal(err)
+					}
 				}
 			    	if filepath.Ext(path) == ".json" {
 			    		fmt.Println(path)
