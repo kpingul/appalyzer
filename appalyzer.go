@@ -5,8 +5,13 @@ import (
 	"os"
 	"fmt"
 	"bufio"
+	"strings"
 	"path/filepath"
 	"github.com/urfave/cli/v2"
+)
+
+var (
+	urls []string
 )
 
 func main() {
@@ -34,7 +39,6 @@ func main() {
 
 			    	//checking for javascript based files
 			    	if filepath.Ext(path) == ".js" {
-			    		fmt.Println(path)
 			    		file, err := os.Open(path)
 					if err != nil {
 						log.Fatal(err)
@@ -44,7 +48,14 @@ func main() {
 					scanner := bufio.NewScanner(file)
 					
 					for scanner.Scan() {
-						// fmt.Println(scanner.Text())
+
+						//test case #1 HTTP/HTTPS
+						if strings.Contains(scanner.Text(), "http://") {
+							urls = append(urls, scanner.Text())
+						}
+						if strings.Contains(scanner.Text(), "https://") {
+							urls = append(urls, scanner.Text())
+						}
 					}
 
 					if err := scanner.Err(); err != nil {
@@ -52,11 +63,10 @@ func main() {
 					}
 				}
 			    	if filepath.Ext(path) == ".json" {
-			    		fmt.Println(path)
+			    	
 				
 				}
 			    	if filepath.Ext(path) == ".ejs" {
-			    		fmt.Println(path)
 				
 				}
 			    	
@@ -67,6 +77,7 @@ func main() {
 			if err != nil {
 			    log.Println(err)
 			}
+
 
 		     	return nil
 	    	},
