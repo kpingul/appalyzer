@@ -9,6 +9,11 @@ TODO--
 	
 3.Add detection rules
 	-URLs (HTTP/HTTPS) 
+		-how can we determine if this is being called?
+			-API?
+			-static frontend files? CDN?
+			-comment?
+			-need to add more context
 	-Ports 
 	-Domains
 	-IP addresses
