@@ -5,16 +5,22 @@ import (
 	"os"
 	"fmt"
 	"bufio"
-	"strings"
 	"path/filepath"
+	"regexp"
 	"github.com/urfave/cli/v2"
 )
 
 var (
 	urls []string
+	ports []string 
 )
 
 func main() {
+
+	//init regex 
+	regexURL, _ := regexp.Compile(`https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)`)
+
+
 	//Initial CLI App Setup
 	app := &cli.App{
 		Name:        "Appalyzer",
@@ -31,7 +37,7 @@ func main() {
 
 
 			//walking through project recursively
-			err := filepath.Walk(`C:\Users\14152\Downloads\Eat36Five-master\Eat36Five-master`,
+			err := filepath.Walk(`.`,
 				func(path string, info os.FileInfo, err error) error {
 			    		if err != nil {
 			        	return err
@@ -50,11 +56,9 @@ func main() {
 					for scanner.Scan() {
 
 						//test case #1 HTTP/HTTPS
-						if strings.Contains(scanner.Text(), "http://") {
-							urls = append(urls, scanner.Text())
-						}
-						if strings.Contains(scanner.Text(), "https://") {
-							urls = append(urls, scanner.Text())
+						if regexURL.MatchString(scanner.Text()) {
+							url := regexURL.FindString(scanner.Text())
+							urls = append(urls, url)
 						}
 					}
 
@@ -78,6 +82,7 @@ func main() {
 			    log.Println(err)
 			}
 
+			fmt.Println(len(urls))
 
 		     	return nil
 	    	},
