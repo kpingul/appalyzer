@@ -10,8 +10,13 @@ TODO--
 3.Add detection rules
 	-URLs (HTTP/HTTPS) 
 		-how can we determine if this is being called?
-			-API?
+			-API?`
 			-static frontend files? CDN?
+				Rules
+					-link contains href which maps to URL 
+						-if line contains link and href, this will have a URL attached to it 
+					-script contains src which maps to URL
+						-if line contains script and src, this will have a URL attached to it 
 			-comment?
 			-need to add more context
 	-Ports 
