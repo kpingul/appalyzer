@@ -5,6 +5,7 @@ import (
 	"os"
 	"fmt"
 	"bufio"
+	"net/http"
 	"path/filepath"
 	"regexp"
 	"github.com/urfave/cli/v2"
@@ -34,6 +35,13 @@ func main() {
 			&cli.StringFlag{Name: "filepath", Value: "", Usage: "Choose a app project to analyze", Required: false,},
 		},
 		Action: func(c *cli.Context) error {
+
+			webCheck := false
+
+			//input validation checks
+		    	if (c.String("web") == "yes" ) {
+		    		webCheck = true
+		    	}
 
 
 			//walking through project recursively
@@ -72,6 +80,13 @@ func main() {
 				}
 			    	if filepath.Ext(path) == ".ejs" {
 				
+				}
+
+	     			if webCheck {
+		     			//setup http web server and API's
+				    	fileServer := http.FileServer(http.Dir("./frontend")) 
+				    	http.Handle("/", fileServer) 
+					http.ListenAndServe(":8090", nil)
 				}
 			    	
 
