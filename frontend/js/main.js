@@ -77,6 +77,6 @@ var cy = window.cy = cytoscape({
 
         layout: {
                 name: 'preset',
-                padding: 150
+                padding: 160
         }
 });
