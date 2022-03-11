@@ -36,68 +36,92 @@ func main() {
 		},
 		Action: func(c *cli.Context) error {
 
+			valChecks := false
 			webCheck := false
 
 			//input validation checks
 		    	if (c.String("web") == "yes" ) {
 		    		webCheck = true
+		    	} else {
+
+			    	if (c.String("filepath") == "" ) {
+			    		valChecks = false
+			    	} else {
+			    		valChecks = true
+			    	}
 		    	}
 
+		    	// run if input checks out 
+	     		if webCheck {
+	     			fmt.Println("RUNNING WEB SERVER")
+			    	fileServer := http.FileServer(http.Dir("./frontend")) 
+			    	http.Handle("/", fileServer) 
+				http.ListenAndServe(":8090", nil)
+	     		} else {
+			     	if valChecks {
 
-			//walking through project recursively
-			err := filepath.Walk(`.`,
-				func(path string, info os.FileInfo, err error) error {
-			    		if err != nil {
-			        	return err
-			    	}
+					//walking through project recursively
+					err := filepath.Walk(c.String("filepath"),
+						func(path string, info os.FileInfo, err error) error {
+					    		if err != nil {
+					        	return err
+					    	}
 
-			    	//checking for javascript based files
-			    	if filepath.Ext(path) == ".js" {
-			    		file, err := os.Open(path)
-					if err != nil {
-						log.Fatal(err)
-					}
-					defer file.Close()
+					    	//checking for javascript based files
+					    	if filepath.Ext(path) == ".js" {
+					    		file, err := os.Open(path)
+							if err != nil {
+								log.Fatal(err)
+							}
+							defer file.Close()
 
-					scanner := bufio.NewScanner(file)
-					
-					for scanner.Scan() {
+							scanner := bufio.NewScanner(file)
+							
+							for scanner.Scan() {
 
-						//test case #1 HTTP/HTTPS
-						if regexURL.MatchString(scanner.Text()) {
-							url := regexURL.FindString(scanner.Text())
-							urls = append(urls, url)
+								//test case #1 HTTP/HTTPS
+								if regexURL.MatchString(scanner.Text()) {
+									url := regexURL.FindString(scanner.Text())
+									urls = append(urls, url)
+								}
+							}
+
+							if err := scanner.Err(); err != nil {
+								log.Fatal(err)
+							}
 						}
+					    	if filepath.Ext(path) == ".json" {
+					    	
+						
+						}
+					    	if filepath.Ext(path) == ".ejs" {
+						
+						}
+
+			     			if webCheck {
+				     			//setup http web server and API's
+						    	fileServer := http.FileServer(http.Dir("./frontend")) 
+						    	http.Handle("/", fileServer) 
+							http.ListenAndServe(":8090", nil)
+						}
+					    	
+
+					    	return nil
+					})
+					
+					if err != nil {
+					    log.Println(err)
 					}
 
-					if err := scanner.Err(); err != nil {
-						log.Fatal(err)
-					}
-				}
-			    	if filepath.Ext(path) == ".json" {
-			    	
-				
-				}
-			    	if filepath.Ext(path) == ".ejs" {
-				
-				}
+					fmt.Println(len(urls))
 
-	     			if webCheck {
-		     			//setup http web server and API's
-				    	fileServer := http.FileServer(http.Dir("./frontend")) 
-				    	http.Handle("/", fileServer) 
-					http.ListenAndServe(":8090", nil)
-				}
-			    	
+			     	} else {
+			     		fmt.Println("stop program..")
+			     		return nil
+			     	}
+	     		}
 
-			    	return nil
-			})
-			
-			if err != nil {
-			    log.Println(err)
-			}
 
-			fmt.Println(len(urls))
 
 		     	return nil
 	    	},
