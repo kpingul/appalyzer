@@ -1,4 +1,4 @@
-var cy = window.cy = cytoscape({
+let cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
 
         boxSelectionEnabled: false,
