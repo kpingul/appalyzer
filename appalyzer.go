@@ -85,9 +85,14 @@ func main() {
 									urls = append(urls, url)
 								}
 
+								//test case #2 IP Addresses
 								if regexIP.MatchString(scanner.Text()) {
-									ip := regexIP.FindString(scanner.Text())
-									fmt.Println(ip)
+									ipCheck := checkIP(regexIP.FindString(scanner.Text()))
+
+									if ipCheck {
+										ip := regexIP.FindString(scanner.Text())
+										fmt.Println(ip)
+									}
 								}
 							}
 
@@ -138,5 +143,17 @@ func main() {
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+/* Utility */
+
+func checkIP(ip string) bool{
+
+	//check for local host
+	if ip == "127.0.0.1" {
+		return false
+	} else {
+		return true
 	}
 }
