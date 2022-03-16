@@ -20,7 +20,7 @@ func main() {
 
 	//init regex 
 	regexURL, _ := regexp.Compile(`https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)`)
-
+	regexIP := regexp.MustCompile(`(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}`)
 
 	//Initial CLI App Setup
 	app := &cli.App{
@@ -83,6 +83,11 @@ func main() {
 								if regexURL.MatchString(scanner.Text()) {
 									url := regexURL.FindString(scanner.Text())
 									urls = append(urls, url)
+								}
+
+								if regexIP.MatchString(scanner.Text()) {
+									ip := regexIP.FindString(scanner.Text())
+									fmt.Println(ip)
 								}
 							}
 
