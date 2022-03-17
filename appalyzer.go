@@ -161,6 +161,15 @@ func checkIP(ip string) bool{
 
 // Check if a ip is private.
 func privateIPCheck(ip string) bool {
-    ipAddress := net.ParseIP(ip)
-    return ipAddress.IsPrivate()
+    	ipAddress := net.ParseIP(ip)
+    	return ipAddress.IsPrivate()
+}
+
+// check ip address validity 
+func checkIPAddress(ip string) bool {
+    	if net.ParseIP(ip) == nil {
+    		return false
+    	} else {
+    		return true
+    	}
 }
