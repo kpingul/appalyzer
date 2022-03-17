@@ -22,4 +22,6 @@ TODO--
 	-Ports 
 	-Domains
 	-IP addresses
+		-private or public IP
+		-if private, we can say it's communicating to an internal service within the network
 	-Keys
