@@ -5,6 +5,7 @@ import (
 	"os"
 	"fmt"
 	"bufio"
+	"net"
 	"net/http"
 	"path/filepath"
 	"regexp"
@@ -156,4 +157,10 @@ func checkIP(ip string) bool{
 	} else {
 		return true
 	}
+}
+
+// Check if a ip is private.
+func privateIPCheck(ip string) bool {
+    ipAddress := net.ParseIP(ip)
+    return ipAddress.IsPrivate()
 }
