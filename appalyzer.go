@@ -88,7 +88,7 @@ func main() {
 
 								//test case #2 IP Addresses
 								if regexIP.MatchString(scanner.Text()) {
-									ipCheck := checkIP(regexIP.FindString(scanner.Text()))
+									ipCheck := checkIPAddress(regexIP.FindString(scanner.Text()))
 
 									if ipCheck {
 										ip := regexIP.FindString(scanner.Text())
@@ -148,16 +148,6 @@ func main() {
 }
 
 /* Utility */
-
-func checkIP(ip string) bool{
-
-	//check for local host
-	if ip == "127.0.0.1" {
-		return false
-	} else {
-		return true
-	}
-}
 
 // Check if a ip is private.
 func privateIPCheck(ip string) bool {
