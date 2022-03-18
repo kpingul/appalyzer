@@ -150,9 +150,14 @@ func main() {
 /* Utility */
 
 // Check if a ip is private.
-func privateIPCheck(ip string) bool {
+func privateIPCheck(ip string) string {
     	ipAddress := net.ParseIP(ip)
-    	return ipAddress.IsPrivate()
+
+    	if ipAddress.IsPrivate() {
+    		return "Private"
+    	} else {
+    		return "Public"
+    	}
 }
 
 // check ip address validity 
