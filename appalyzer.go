@@ -17,6 +17,19 @@ var (
 	ports []string 
 )
 
+//Types -- API | CDN
+type URL struct {
+	Type string 
+	URL string
+}
+
+
+//Types -- Public | Private
+type IP struct {
+	Type string 
+	IP string 
+}
+
 func main() {
 
 	//init regex 
