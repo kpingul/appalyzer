@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"github.com/urfave/cli/v2"
 )
 
@@ -82,7 +83,7 @@ func main() {
 					    	}
 
 					    	//checking for javascript based files
-					    	if filepath.Ext(path) == ".js" {
+					    	if filepath.Ext(path) == ".js" || filepath.Ext(path) == ".json" || filepath.Ext(path) == ".ejs" {
 					    		file, err := os.Open(path)
 							if err != nil {
 								log.Fatal(err)
@@ -95,8 +96,25 @@ func main() {
 
 								//test case #1 HTTP/HTTPS
 								if regexURL.MatchString(scanner.Text()) {
-									url := regexURL.FindString(scanner.Text())
-									urls = append(urls, url)
+									/*
+									CDN Detection
+									-link contains href which maps to URL 
+										-if line contains link and href, this will have a URL attached to it 
+									-script contains src which maps to URL
+										-if line contains script and src, this will have a URL attached to it 
+									
+									if scanner.Text() contains link + href= 
+										CSS file
+									if scanner.Text() contains script + src=
+										JS file
+									*/
+									if strings.Contains(scanner.Text(), "link") && strings.Contains(scanner.Text(), "href=") {
+										// fmt.Println(regexURL.FindString(scanner.Text()))
+									}
+									if strings.Contains(scanner.Text(), "script") && strings.Contains(scanner.Text(), "src=") {
+										// fmt.Println(regexURL.FindString(scanner.Text()))
+									}
+
 								}
 
 								//test case #2 IP Addresses
@@ -113,13 +131,6 @@ func main() {
 							if err := scanner.Err(); err != nil {
 								log.Fatal(err)
 							}
-						}
-					    	if filepath.Ext(path) == ".json" {
-					    	
-						
-						}
-					    	if filepath.Ext(path) == ".ejs" {
-						
 						}
 
 			     			if webCheck {
@@ -166,7 +177,9 @@ func main() {
 func privateIPCheck(ip string) string {
     	ipAddress := net.ParseIP(ip)
 
-    	if ipAddress.IsPrivate() {
+    	if ip == "127.0.0.1" {
+    		return "Private"
+    	} else if ipAddress.IsPrivate() {
     		return "Private"
     	} else {
     		return "Public"
