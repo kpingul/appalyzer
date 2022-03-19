@@ -22,6 +22,7 @@ var (
 type URL struct {
 	Type string 
 	URL string
+	Path string
 }
 
 
@@ -112,17 +113,29 @@ func main() {
 									*/
 									if strings.Contains(scanner.Text(), "link") && strings.Contains(scanner.Text(), "href=") {
 										if _, ok := dupURLS[regexURL.FindString(scanner.Text())]; !ok {
-											fmt.Println(regexURL.FindString(scanner.Text()))
 											
 											dupURLS[regexURL.FindString(scanner.Text())] = regexURL.FindString(scanner.Text()) 
+										
 											urls = append(urls, URL{
 												Type: "CDN",
 												URL: regexURL.FindString(scanner.Text()),
+												Path: path,
 											})
+
 										}
 									}
 									if strings.Contains(scanner.Text(), "script") && strings.Contains(scanner.Text(), "src=") {
-										// fmt.Println(regexURL.FindString(scanner.Text()))
+										if _, ok := dupURLS[regexURL.FindString(scanner.Text())]; !ok {
+											
+											dupURLS[regexURL.FindString(scanner.Text())] = regexURL.FindString(scanner.Text()) 
+										
+											urls = append(urls, URL{
+												Type: "CDN",
+												URL: regexURL.FindString(scanner.Text()),
+												Path: path,
+											})
+
+										}
 									}
 
 								}
