@@ -161,14 +161,7 @@ func main() {
 					    	return nil
 					})
 
-					//check for web
-		     			if webCheck {
-			     			//setup http web server and API's
-					    	fileServer := http.FileServer(http.Dir("./frontend")) 
-					    	http.Handle("/", fileServer) 
-						http.ListenAndServe(":8090", nil)
-					}
-				    	
+					
 					if err != nil {
 					    log.Println(err)
 					}
