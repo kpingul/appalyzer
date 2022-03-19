@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	urls []string
+	urls []URL
 	ports []string 
 )
 
@@ -32,6 +32,8 @@ type IP struct {
 }
 
 func main() {
+
+	dupURLS := make(map[string]string)
 
 	//init regex 
 	regexURL, _ := regexp.Compile(`https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)`)
@@ -109,7 +111,15 @@ func main() {
 										JS file
 									*/
 									if strings.Contains(scanner.Text(), "link") && strings.Contains(scanner.Text(), "href=") {
-										// fmt.Println(regexURL.FindString(scanner.Text()))
+										if _, ok := dupURLS[regexURL.FindString(scanner.Text())]; !ok {
+											fmt.Println(regexURL.FindString(scanner.Text()))
+											
+											dupURLS[regexURL.FindString(scanner.Text())] = regexURL.FindString(scanner.Text()) 
+											urls = append(urls, URL{
+												Type: "CDN",
+												URL: regexURL.FindString(scanner.Text()),
+											})
+										}
 									}
 									if strings.Contains(scanner.Text(), "script") && strings.Contains(scanner.Text(), "src=") {
 										// fmt.Println(regexURL.FindString(scanner.Text()))
@@ -133,22 +143,23 @@ func main() {
 							}
 						}
 
-			     			if webCheck {
-				     			//setup http web server and API's
-						    	fileServer := http.FileServer(http.Dir("./frontend")) 
-						    	http.Handle("/", fileServer) 
-							http.ListenAndServe(":8090", nil)
-						}
-					    	
+
 
 					    	return nil
 					})
-					
+
+					//check for web
+		     			if webCheck {
+			     			//setup http web server and API's
+					    	fileServer := http.FileServer(http.Dir("./frontend")) 
+					    	http.Handle("/", fileServer) 
+						http.ListenAndServe(":8090", nil)
+					}
+				    	
 					if err != nil {
 					    log.Println(err)
 					}
 
-					fmt.Println(len(urls))
 
 			     	} else {
 			     		fmt.Println("stop program..")
