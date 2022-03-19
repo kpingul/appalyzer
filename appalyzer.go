@@ -85,83 +85,91 @@ func main() {
 					        	return err
 					    	}
 
-					    	//checking for javascript based files
-					    	if filepath.Ext(path) == ".js" || filepath.Ext(path) == ".json" || filepath.Ext(path) == ".ejs" {
-					    		file, err := os.Open(path)
-							if err != nil {
-								log.Fatal(err)
-							}
-							defer file.Close()
+					    	if !info.IsDir() {
 
-							scanner := bufio.NewScanner(file)
-							
-							for scanner.Scan() {
+						    	//checking for javascript based files
+						    	if filepath.Ext(path) == ".js" || filepath.Ext(path) == ".json" || filepath.Ext(path) == ".ejs" {
+						    		file, err := os.Open(path)
+								if err != nil {
+									log.Fatal(err)
+								}
+								defer file.Close()
 
-								//test case #1 HTTP/HTTPS
-								if regexURL.MatchString(scanner.Text()) {
-									/*
-									CDN Detection
-									-link contains href which maps to URL 
-										-if line contains link and href, this will have a URL attached to it 
-									-script contains src which maps to URL
-										-if line contains script and src, this will have a URL attached to it 
-									
-									if scanner.Text() contains link + href= 
-										CSS file
-									if scanner.Text() contains script + src=
-										JS file
-									*/
-									if strings.Contains(scanner.Text(), "link") && strings.Contains(scanner.Text(), "href=") {
-										if _, ok := dupURLS[regexURL.FindString(scanner.Text())]; !ok {
-											
-											dupURLS[regexURL.FindString(scanner.Text())] = regexURL.FindString(scanner.Text()) 
+								scanner := bufio.NewScanner(file)
+								buf := make([]byte, 0, 64*1024)
+								scanner.Buffer(buf, 1024*1024)
+								
+								for scanner.Scan() {
+
+									//test case #1 HTTP/HTTPS
+									if regexURL.MatchString(scanner.Text()) {
+										/*
+										CDN Detection
+										-link contains href which maps to URL 
+											-if line contains link and href, this will have a URL attached to it 
+										-script contains src which maps to URL
+											-if line contains script and src, this will have a URL attached to it 
 										
-											urls = append(urls, URL{
-												Type: "CDN",
-												URL: regexURL.FindString(scanner.Text()),
-												Path: path,
-											})
+										if scanner.Text() contains link + href= 
+											CSS file
+										if scanner.Text() contains script + src=
+											JS file
+										*/
+										if strings.Contains(scanner.Text(), "link") && strings.Contains(scanner.Text(), "href=") {
+											if _, ok := dupURLS[regexURL.FindString(scanner.Text())]; !ok {
+												
+												dupURLS[regexURL.FindString(scanner.Text())] = regexURL.FindString(scanner.Text()) 
+											
+												urls = append(urls, URL{
+													Type: "CDN",
+													URL: regexURL.FindString(scanner.Text()),
+													Path: path,
+												})
 
+											}
+										}
+										if strings.Contains(scanner.Text(), "script") && strings.Contains(scanner.Text(), "src=") {
+											if _, ok := dupURLS[regexURL.FindString(scanner.Text())]; !ok {
+												
+												dupURLS[regexURL.FindString(scanner.Text())] = regexURL.FindString(scanner.Text()) 
+											
+												urls = append(urls, URL{
+													Type: "CDN",
+													URL: regexURL.FindString(scanner.Text()),
+													Path: path,
+												})
+
+											}
+										}
+
+									}
+
+									//test case #2 IP Addresses
+									if regexIP.MatchString(scanner.Text()) {
+										ipCheck := checkIPAddress(regexIP.FindString(scanner.Text()))
+
+										if ipCheck {
+											// ip := regexIP.FindString(scanner.Text())
+											// fmt.Println(ip)
 										}
 									}
-									if strings.Contains(scanner.Text(), "script") && strings.Contains(scanner.Text(), "src=") {
-										if _, ok := dupURLS[regexURL.FindString(scanner.Text())]; !ok {
-											
-											dupURLS[regexURL.FindString(scanner.Text())] = regexURL.FindString(scanner.Text()) 
-										
-											urls = append(urls, URL{
-												Type: "CDN",
-												URL: regexURL.FindString(scanner.Text()),
-												Path: path,
-											})
-
-										}
-									}
-
 								}
 
-								//test case #2 IP Addresses
-								if regexIP.MatchString(scanner.Text()) {
-									ipCheck := checkIPAddress(regexIP.FindString(scanner.Text()))
-
-									if ipCheck {
-										ip := regexIP.FindString(scanner.Text())
-										fmt.Println(ip)
-									}
+								if err := scanner.Err(); err != nil {
+									log.Fatal(err)
 								}
 							}
 
-							if err := scanner.Err(); err != nil {
-								log.Fatal(err)
-							}
-						}
 
+					    	}
 
 
 					    	return nil
 					})
 
-					
+					for i := 0; i < len(urls); i++ {
+						fmt.Println(urls[i])
+					}
 					if err != nil {
 					    log.Println(err)
 					}
