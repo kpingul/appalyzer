@@ -148,6 +148,13 @@ func main() {
 									if regexIP.MatchString(scanner.Text()) {
 										ipCheck := checkIPAddress(regexIP.FindString(scanner.Text()))
 
+										/*
+										IP detection filtering
+											-need to find a way to filter non IP addresses
+
+										*/
+
+
 										if ipCheck {
 											// ip := regexIP.FindString(scanner.Text())
 											// fmt.Println(ip)
