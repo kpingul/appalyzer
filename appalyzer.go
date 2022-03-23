@@ -16,6 +16,7 @@ import (
 var (
 	urls []URL
 	ports []string 
+	ips []IP
 )
 
 //Types -- API | CDN
@@ -156,8 +157,11 @@ func main() {
 
 
 										if ipCheck {
-											// ip := regexIP.FindString(scanner.Text())
-											// fmt.Println(ip)
+											ip := regexIP.FindString(scanner.Text())
+											ips - append(ips, IP{
+												Type: privateIPCheck(ip),
+												IP: ip,
+											})
 										}
 									}
 								}
