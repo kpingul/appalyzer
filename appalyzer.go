@@ -158,7 +158,7 @@ func main() {
 
 										if ipCheck {
 											ip := regexIP.FindString(scanner.Text())
-											ips - append(ips, IP{
+											ips = append(ips, IP{
 												Type: privateIPCheck(ip),
 												IP: ip,
 											})
